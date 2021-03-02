@@ -16,12 +16,14 @@ def load_new_test_data(root, version='default'):
     filename = 'cifar10.1'
     if version == 'default':
         pass
-    elif version == 'v0':
-        filename += '-v0'
+    elif version == 'v4':
+        filename += '_v4'
+    elif version == 'v6':
+        filename += '_v6'
     else:
         raise ValueError('Unknown dataset version "{}".'.format(version))
-    label_filename = filename + '-labels.npy'
-    imagedata_filename = filename + '-data.npy'
+    label_filename = filename + '_labels.npy'
+    imagedata_filename = filename + '_data.npy'
     label_filepath = os.path.join(data_path, label_filename)
     imagedata_filepath = os.path.join(data_path, imagedata_filename)
     labels = np.load(label_filepath).astype(np.int64)
@@ -32,21 +34,18 @@ def load_new_test_data(root, version='default'):
     assert imagedata.shape[1] == 32
     assert imagedata.shape[2] == 32
     assert imagedata.shape[3] == 3
-    if version == 'default':
-        assert labels.shape[0] == 2000
-    elif version == 'v0':
-        assert labels.shape[0] == 2021
+    assert labels.shape[0] == 2000
     return imagedata, labels
 
 
-class CIFAR10_1(data.Dataset):
-    images_url = 'https://github.com/modestyachts/CIFAR-10.1/blob/master/datasets/cifar10.1-data.npy?raw=true'
-    images_md5 = '29615bb88ff99bca6b147cee2520f010'
-    images_filename = 'cifar10.1-data.npy'
+class CIFAR10_1_v6(data.Dataset):
+    images_url = 'https://github.com/modestyachts/CIFAR-10.1/blob/master/datasets/cifar10.1_v6_data.npy?raw=true'
+    images_md5 = '4fcae82cb1326aec9ed1dc1fc62345b8'
+    images_filename = 'cifar10.1_v6_data.npy'
 
-    labels_url = 'https://github.com/modestyachts/CIFAR-10.1/blob/master/datasets/cifar10.1-labels.npy?raw=true'
-    labels_md5 = 'a27460fa134ae91e4a5cb7e6be8d269e'
-    labels_filename = 'cifar10.1-labels.npy'
+    labels_url = 'https://github.com/modestyachts/CIFAR-10.1/blob/master/datasets/cifar10.1_v6_labels.npy?raw=true'
+    labels_md5 = '09a97fb7c430502fcbd69d95093a3f85'
+    labels_filename = 'cifar10.1_v6_labels.npy'
 
     classes = [
         'airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse',
@@ -73,7 +72,7 @@ class CIFAR10_1(data.Dataset):
             raise RuntimeError('Dataset not found or corrupted.' +
                                ' You can use download=True to download it')
 
-        images, labels = load_new_test_data(root)
+        images, labels = load_new_test_data(root, 'v6')
 
         self.data = images
         self.labels = labels
